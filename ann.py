@@ -49,6 +49,23 @@ cm = confusion_matrix(y_test, y_pred)
 
 classifier.predict(sc.transform(np.array([[0,0,600,1,40,3,60000,2,1,1,50000]])))
 
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+from keras.models import Sequential
+from keras.layers import Dense
+
+def build_classifier():
+    classifier = Sequential()
+    classifier.add(Dense(output_dim=6, init='uniform', activation='relu', input_dim=11))
+    classifier.add(Dense(output_dim=6, init = 'uniform', activation='relu'))
+    classifier.add(Dense(output_dim=1, init='uniform', activation='sigmoid'))
+    classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return classifier
+
+classifier = KerasClassifier(build_fn = build_classifier, batch_size=10, nb_epoch=100)
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv=10, n_jobs=-1)
+
+
 
 
 
