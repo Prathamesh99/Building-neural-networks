@@ -16,7 +16,7 @@ X = onehotencoder.fit_transform(X).toarray()
 X = X[:,1:]
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.2, random_state=0)
 
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
@@ -36,11 +36,18 @@ classifier.add(Dense(output_dim=6, init='uniform', activation='relu', input_dim=
 classifier.add(Dense(output_dim=6, init = 'uniform', activation='relu'))
 
 #Adding the output layer
-
 classifier.add(Dense(output_dim=1, init='uniform', activation='sigmoid'))
 
+classifier.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+classifier.fit(X_train, y_train, batch_size=10, nb_epoch=100)
 
+y_pred = classifier.predict(X_test)
+y_pred = (y_pred>0.5)
 
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+classifier.predict(sc.transform(np.array([[0,0,600,1,40,3,60000,2,1,1,50000]])))
 
 
 
