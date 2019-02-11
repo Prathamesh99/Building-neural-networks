@@ -52,3 +52,19 @@ classifier.fit_generator(
         epochs=25,
         validation_data=testing_set,
         validation_steps=2000)
+
+
+import numpy as np
+from keras.preprocessing import image
+test_image = image.load_img('dataset/single_predictions/cat_or_dog_1.jpg', target_size = (64,64))
+test_image = np.expand_dims(test_image, axis=0)
+classifier.predict(test_image)
+
+
+
+
+
+
+
+
+
